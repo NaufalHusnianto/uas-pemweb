@@ -13,9 +13,31 @@
         @csrf
     </form>
 
-    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
+    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6" enctype="multipart/form-data">
         @csrf
         @method('patch')
+
+        <div class="flex flex-col justify-center items-center">
+            @if ($user->photo_url)
+                <div class="mt-2">
+                    <img src="{{ asset('storage/' . $user->photo_url) }}" alt="Profile Photo" class="w-20 h-20 rounded-full object-cover">
+                </div>
+            @endif
+        
+            <x-input-label for="photo" :value="__('Upload Image')" class="mt-2 hover:text-gray-500 cursor-pointer" />
+            
+            <input 
+                id="photo" 
+                name="photo" 
+                type="file" 
+                class="hidden"
+                onchange="displayFileName()"
+            />
+
+            <p id="file-name" class="mt-2 text-gray-600"></p>
+            
+            <x-input-error class="mt-2" :messages="$errors->get('photo')" />
+        </div>
 
         <div>
             <x-input-label for="name" :value="__('Name')" />
@@ -62,3 +84,13 @@
         </div>
     </form>
 </section>
+
+<script>
+    function displayFileName() {
+        const fileInput = document.getElementById('photo');
+        const fileName = fileInput.files[0]?.name;
+        if (fileName) {
+            document.getElementById('file-name').textContent = `Selected file: ${fileName}`;
+        }
+    }
+</script>

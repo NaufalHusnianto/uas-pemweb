@@ -45,13 +45,12 @@
 
                 <!-- Authenticated User Menu -->
                 @auth
-                    <div class="hidden sm:flex sm:items-center sm:ms-6">
+                    <div class="hidden sm:flex sm:items-center sm:ms-2">
                         <x-dropdown align="right" width="48">
                             <x-slot name="trigger">
                                 <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
-                                    <!-- Foto Avatar -->
                                     <img 
-                                        src="{{ Auth::user()->photo_profile ? asset('storage/' . Auth::user()->photo_profile) : '/user.png' }}" 
+                                        src="{{ Auth::user()->photo_url ? asset('storage/' . Auth::user()->photo_url) : '/user.png' }}" 
                                         alt="User Avatar" 
                                         class="h-10 w-10 rounded-full object-cover"
                                     />
@@ -80,8 +79,7 @@
                 <!-- Guest User Menu -->
                 @guest
                     <div class="hidden sm:flex sm:items-center sm:ms-4 space-x-4">
-                        <a href="{{ route('login') }}" class="text-sm font-medium text-gray-700 hover:text-gray-900">{{ __('Login') }}</a>
-                        <a href="{{ route('register') }}" class="text-sm font-medium text-gray-700 hover:text-gray-900">{{ __('Register') }}</a>
+                        <a href="{{ route('login') }}" class="text-sm font-medium text-gray-700 hover:text-gray-900">{{ __('Sign In') }}</a>
                     </div>
                 @endguest
 
