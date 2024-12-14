@@ -19,7 +19,8 @@
         <nav class="bg-white shadow-md border-b border-gray-200">
             <div class="container mx-auto px-4 py-3 flex items-center justify-between">
                 <!-- Brand -->
-                <a href="{{ route('admin') }}" class="text-xl font-bold text-gray-800 hover:text-blue-600">
+                <a href="{{ route('admin') }}" class="text-xl font-bold text-gray-800 hover:text-blue-600 flex gap-4">
+                    <x-application-logo class="h-6 w-auto fill-current" />
                     Admin Panel
                 </a>
 
@@ -56,15 +57,14 @@
                         Admin Panel
                     </a>
                     <nav class="space-y-4">
-                        <a href="{{ route('admin') }}" class="block px-4 py-2 rounded-md bg-gray-700 hover:bg-gray-600">Dashboard</a>
-                        <a href="{{ route('admin') }}" class="block px-4 py-2 rounded-md hover:bg-gray-600">Manage Users</a>
-                        <a href="{{ route('admin') }}" class="block px-4 py-2 rounded-md hover:bg-gray-600">Manage Products</a>
+                        <a href="{{ route('admin') }}" class="block px-4 py-2 rounded-md hover:bg-gray-600 {{ request()->routeIs('admin') ? 'bg-gray-700' : '' }}">Dashboard</a>
+                        <a href="{{ route('admin.product.index') }}" class="block px-4 py-2 rounded-md hover:bg-gray-600 {{ request()->is('admin/product*') ? 'bg-gray-700' : '' }}">Manage Products</a>
                     </nav>
                 </div>
             </aside>
 
             <!-- Main Content -->
-            <main class="flex-1 p-6 ml-0 md:ml-64">
+            <main class="flex-1 p-8">
                 {{ $slot }}
             </main>
         </div>
