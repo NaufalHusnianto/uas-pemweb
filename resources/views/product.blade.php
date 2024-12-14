@@ -25,7 +25,7 @@
             @else
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                     @foreach($products as $product)
-                        <div class="bg-white p-4 rounded-lg shadow-md">
+                        <a href="{{ route('products.detail', $product->id) }}" class="block bg-white p-4 rounded-lg shadow-md hover:shadow-lg hover:bg-gray-100 transition-shadow duration-300">
                             <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="w-full h-48 object-cover rounded-md mb-4">
                             <h2 class="text-xl font-semibold">{{ $product->name }}</h2>
                             <p class="text-gray-600 mt-2">
@@ -34,11 +34,7 @@
                                 @endforeach
                             </p>
                             <p class="text-lg font-semibold text-blue-600 mt-2">IDR {{ number_format($product->price, 2) }}</p>
-
-                            <div class="mt-4">
-                                <a href="{{ route('products.show', $product->id) }}" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md">View Details</a>
-                            </div>
-                        </div>
+                        </a>
                     @endforeach
                 </div>
             @endif

@@ -13,21 +13,21 @@
 
             <!-- Navigation Links -->
             <div class="hidden space-x-8 sm:flex">
-                <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                <x-nav-link :href="route('products', ['category[]' => 11])" :active="request()->routeIs('products') && request()->has('category') && in_array(11, request()->get('category'))">
                     {{ __('New & Featured') }}
                 </x-nav-link>
-                <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                    {{ __('Men') }}
+                <x-nav-link :href="route('products', ['category[]' => 8])" :active="request()->routeIs('products') && request()->has('category') && in_array(8, request()->get('category'))">
+                    {{ __('Man') }}
                 </x-nav-link>
-                <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                    {{ __('Women') }}
+                <x-nav-link :href="route('products', ['category[]' => 9])" :active="request()->routeIs('products') && request()->has('category') && in_array(9, request()->get('category'))">
+                    {{ __('Woman') }}
                 </x-nav-link>
-                <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                <x-nav-link :href="route('products', ['category[]' => 10])" :active="request()->routeIs('products') && request()->has('category') && in_array(10, request()->get('category'))">
                     {{ __('Kids') }}
                 </x-nav-link>
-                <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                <x-nav-link :href="route('products', ['category[]' => 12])" :active="request()->routeIs('products') && request()->has('category') && in_array(12, request()->get('category'))">
                     {{ __('Sale') }}
-                </x-nav-link>
+                </x-nav-link>              
             </div>
 
             <div class="flex items-center justify-end w-1/3">
@@ -39,9 +39,10 @@
                 <button class="p-2 hover:bg-gray-200 rounded-full sm:ms-4">
                     <x-heroicon-o-heart class="h-5 w-5" />
                 </button>
-                <button class="p-2 hover:bg-gray-200 rounded-full">
+                <a href="{{ route('cart.index') }}" class="p-2 hover:bg-gray-200 rounded-full">
                     <x-heroicon-o-shopping-cart class="h-5 w-5" />
-                </button>
+                </a>
+                
 
                 <!-- Authenticated User Menu -->
                 @auth
