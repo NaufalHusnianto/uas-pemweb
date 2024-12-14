@@ -17,7 +17,7 @@ Route::get('/', function () {
     return view('dashboard');
 })->name('dashboard');
 
-Route::get('/products/{category?}', [ProductController::class, 'getProducts'])->name('products');
+Route::get('/products', [ProductController::class, 'getProducts'])->name('products');
 Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
 
 Route::middleware('auth')->group(function () {

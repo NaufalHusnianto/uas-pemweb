@@ -11,11 +11,13 @@
             <div class="flex flex-col">
                 <h2 class="text-xl font-semibold mb-2">Product Details</h2>
                 <p><strong>Name:</strong> {{ $product->name }}</p>
-                <p><strong>Category:</strong> {{ $product->category->name }}</p>
+                <p>
+                    <strong>Categories:</strong>
+                    {{ $product->categories->pluck('name')->join(', ') }}
+                </p>  
                 <p><strong>Description:</strong> {{ $product->description }}</p>
                 <p><strong>Price:</strong> ${{ number_format($product->price, 2) }}</p>
                 <p><strong>Stock:</strong> {{ $product->stock }}</p>
-                <p><strong>Status:</strong> {{ ucfirst($product->status) }}</p>
             </div>
 
             <div class="flex justify-center items-center">

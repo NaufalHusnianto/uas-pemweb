@@ -7,13 +7,19 @@
 
     <div class="py-6 flex">
         <!-- Sidebar -->
-        @include('components.category-sidebar', ['categories' => $categories, 'category' => $category])
+        @include('components.category-sidebar', ['categories' => $categories, 'selectedCategories' => $selectedCategories])
 
-        <!-- Product List -->
         <div class="w-3/4 pl-6">
-            <h1 class="text-3xl mb-4">{{ $category ? $category->name : 'All Products' }}</h1>
+            <h1 class="text-3xl mb-4">
+                Our Products
+            </h1>
 
-            <!-- Check if there are no products -->
+            @if($selectedCategories && !in_array('all', $selectedCategories))
+                <p class="text-lg text-gray-600 mb-4">Showing products for categories: 
+                    {{ implode(', ', $categories->whereIn('id', $selectedCategories)->pluck('name')->toArray()) }}
+                </p>
+            @endif
+
             @if($products->isEmpty())
                 <p class="text-lg text-gray-600">No products available.</p>
             @else
@@ -22,7 +28,11 @@
                         <div class="bg-white p-4 rounded-lg shadow-md">
                             <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="w-full h-48 object-cover rounded-md mb-4">
                             <h2 class="text-xl font-semibold">{{ $product->name }}</h2>
-                            <p class="text-gray-600 mt-2">{{ $product->category->name }}</p>
+                            <p class="text-gray-600 mt-2">
+                                @foreach($product->categories as $category)
+                                    {{ $category->name }}@if(!$loop->last), @endif
+                                @endforeach
+                            </p>
                             <p class="text-lg font-semibold text-blue-600 mt-2">IDR {{ number_format($product->price, 2) }}</p>
 
                             <div class="mt-4">

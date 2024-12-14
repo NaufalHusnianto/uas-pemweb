@@ -10,20 +10,6 @@
         <form action="{{ route('admin.product.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="mb-4">
-                <label for="category_id" class="block text-sm font-medium text-gray-700">Category</label>
-                <select name="category_id" id="category_id" class="w-full border-gray-300 rounded-md">
-                    <option value="">Select Category</option>
-                    @foreach ($categories as $category)
-                        <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
-                            {{ $category->name }}
-                        </option>
-                    @endforeach
-                </select>
-                @error('category_id')
-                    <span class="text-red-500 text-sm">{{ $message }}</span>
-                @enderror
-            </div>
-            <div class="mb-4">
                 <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
                 <input type="text" name="name" id="name" class="w-full border-gray-300 rounded-md" value="{{ old('name') }}">
                 @error('name')
@@ -34,6 +20,27 @@
                 <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
                 <textarea name="description" id="description" rows="4" class="w-full border-gray-300 rounded-md">{{ old('description') }}</textarea>
                 @error('description')
+                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                @enderror
+            </div>
+            <div class="mb-4">
+                <label for="categories" class="block text-sm font-medium text-gray-700">Categories (Multiple)</label>
+                <div class="grid grid-cols-2 gap-2">
+                @foreach ($categories as $category)
+                    <div class="flex items-center">
+                        <input 
+                            type="checkbox" 
+                            name="categories[]" 
+                            id="category-{{ $category->id }}" 
+                            value="{{ $category->id }}" 
+                            class="mr-2"
+                            {{ in_array($category->id, old('categories', [])) ? 'checked' : '' }}
+                        >
+                        <label>{{ $category->name }}</label>
+                    </div>
+                @endforeach
+                </div>
+                @error('categories')
                     <span class="text-red-500 text-sm">{{ $message }}</span>
                 @enderror
             </div>
@@ -55,18 +62,6 @@
                 <label for="image" class="block text-sm font-medium text-gray-700">Image</label>
                 <input type="file" name="image" id="image" class="w-full border-gray-300 rounded-md">
                 @error('image')
-                    <span class="text-red-500 text-sm">{{ $message }}</span>
-                @enderror
-            </div>
-            <div class="mb-4">
-                <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
-                <select name="status" id="status" class="w-full border-gray-300 rounded-md">
-                    <option value="none" {{ old('status') == 'none' ? 'selected' : '' }}>None</option>
-                    <option value="new" {{ old('status') == 'new' ? 'selected' : '' }}>New</option>
-                    <option value="bestsale" {{ old('status') == 'bestsale' ? 'selected' : '' }}>Best Sale</option>
-                    <option value="trending" {{ old('status') == 'trending' ? 'selected' : '' }}>Trending</option>
-                </select>
-                @error('status')
                     <span class="text-red-500 text-sm">{{ $message }}</span>
                 @enderror
             </div>

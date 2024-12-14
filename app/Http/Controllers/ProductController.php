@@ -14,9 +14,10 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::paginate(10);
+        $products = Product::with('categories')->paginate(10);
         return view('products.index', compact('products'));
     }
+    
 
     /**
      * Show the form for creating a new resource.
@@ -33,23 +34,26 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'category_id' => 'required|exists:categories,id',
+            'categories' => 'required|array',
+            'categories.*' => 'exists:categories,id',
             'name' => 'required|string|max:255',
             'description' => 'required',
             'price' => 'required|integer|min:0',
             'stock' => 'required|integer|min:0',
             'image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
-            'status' => 'required|in:new,bestsale,trending,none',
         ]);
-
+    
         if ($request->hasFile('image')) {
             $validated['image'] = $request->file('image')->store('products', 'public');
         }
-
-        Product::create($validated);
-
+    
+        $product = Product::create($validated);
+    
+        $product->categories()->attach($request->categories);
+    
         return redirect()->route('admin.product.index')->with('success', 'Product created successfully!');
     }
+    
 
     /**
      * Display the specified resource.
@@ -74,24 +78,29 @@ class ProductController extends Controller
     public function update(Request $request, Product $product)
     {
         $validated = $request->validate([
-            'category_id' => 'required|exists:categories,id',
+            'category_id' => 'required|array',
+            'category_id.*' => 'exists:categories,id',
             'name' => 'required|string|max:255',
             'description' => 'required',
             'price' => 'required|integer|min:0',
             'stock' => 'required|integer|min:0',
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-            'status' => 'required|in:new,bestsale,trending,none',
         ]);
-
+    
         if ($request->hasFile('image')) {
             if ($product->image) {
                 Storage::delete('public/' . $product->image);
             }
+
             $validated['image'] = $request->file('image')->store('products', 'public');
+        } else {
+            unset($validated['image']);
         }
-
+    
         $product->update($validated);
-
+    
+        $product->categories()->sync($request->category_id);
+    
         return redirect()->route('admin.product.index')->with('success', 'Product updated successfully!');
     }
 
@@ -100,7 +109,7 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        if ($product->image) {
+        if ($product->image && Storage::exists('public/' . $product->image)) {
             Storage::delete('public/' . $product->image);
         }
     
@@ -108,19 +117,23 @@ class ProductController extends Controller
     
         return redirect()->route('admin.product.index')->with('success', 'Product deleted successfully!');
     }
-
+    
     // dinggo customer
-    public function getProducts(Category $category = null)
+    public function getProducts(Request $request)
     {
         $categories = Category::all();
+        
+        $selectedCategories = $request->input('category', []);
     
-        if ($category) {
-            $products = Product::where('category_id', $category->id)->paginate(8);
+        if (in_array('all', $selectedCategories) || empty($selectedCategories)) {
+            $products = Product::paginate(8);
         } else {
-            $products = Product::with('category')->paginate(8);
+            $products = Product::whereHas('categories', function($query) use ($selectedCategories) {
+                $query->whereIn('categories.id', $selectedCategories);
+            })->paginate(8);
         }
     
-        return view('product', compact('products', 'categories', 'category'));
+        return view('product', compact('products', 'categories', 'selectedCategories'));
     }
     
 }

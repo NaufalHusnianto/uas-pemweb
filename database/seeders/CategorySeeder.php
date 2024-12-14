@@ -13,13 +13,19 @@ class CategorySeeder extends Seeder
     public function run(): void
     {
         Category::insert([
-            ['name' => 'Shoes', 'description' => 'A variety of stylish and comfortable footwear for all occasions.'],
-            ['name' => 'Shirt', 'description' => 'Casual and formal shirts made from high-quality materials.'],
-            ['name' => 'Jacket', 'description' => 'Warm and durable jackets to keep you cozy in any weather.'],
-            ['name' => 'Hoodie', 'description' => 'Trendy and comfortable hoodies for everyday wear.'],
-            ['name' => 'Pants', 'description' => 'A range of pants, from formal to casual styles, for any occasion.'],
-            ['name' => 'Accessories', 'description' => 'Enhance your style with a variety of modern accessories.'],
+            ['name' => 'Shoes', 'description' => 'Discover a wide range of footwear, from casual sneakers to elegant formal shoes.'],
+            ['name' => 'Shirt', 'description' => 'High-quality shirts perfect for formal events or casual outings.'],
+            ['name' => 'Jacket', 'description' => 'Stay warm and stylish with our durable and trendy jackets.'],
+            ['name' => 'Hoodie', 'description' => 'Soft and cozy hoodies ideal for relaxing or staying fashionable on the go.'],
+            ['name' => 'Pants', 'description' => 'Versatile pants designed for comfort and style in every setting.'],
+            ['name' => 'Accessories', 'description' => 'Add the perfect finishing touch to your outfit with our chic accessories.'],
+            ['name' => 'Bags', 'description' => 'Functional and fashionable bags to carry all your essentials with ease.'],
+            ['name' => 'Man', 'description' => 'Modern and sophisticated styles crafted exclusively for men.'],
+            ['name' => 'Women', 'description' => 'Elegant and fashionable collections tailored for women.'],
+            ['name' => 'Kids', 'description' => 'Adorable and durable items designed with kids in mind.'],
+            ['name' => 'New', 'description' => 'Explore our latest arrivals with fresh and innovative designs.'],
+            ['name' => 'BestSale', 'description' => 'Grab the hottest deals on our best-selling products.'],
+            ['name' => 'Trending', 'description' => 'Stay ahead of the curve with our trending and most-loved items.'],
         ]);
-        
     }
 }

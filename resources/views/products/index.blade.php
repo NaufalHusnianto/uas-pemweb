@@ -16,8 +16,7 @@
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Stock</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Image</th> <!-- New column for image -->
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Image</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                 </tr>
             </thead>
@@ -26,11 +25,11 @@
                     <tr class="cursor-pointer hover:bg-gray-100" onclick="window.location='{{ route('admin.product.detail', $product->id) }}'">
                         <td class="px-6 py-4 text-sm text-gray-500">{{ $loop->iteration }}</td>
                         <td class="px-6 py-4 text-sm text-gray-900">{{ $product->name }}</td>
-                        <td class="px-6 py-4 text-sm text-gray-900">{{ $product->category->name }}</td>
+                        <td class="px-6 py-4 text-sm text-gray-900">
+                            {{ $product->categories->pluck('name')->join(', ') }}
+                        </td>                        
                         <td class="px-6 py-4 text-sm text-gray-900">IDR.{{ number_format($product->price, 2) }}</td>
                         <td class="px-6 py-4 text-sm text-gray-900">{{ $product->stock }}</td>
-                        <td class="px-6 py-4 text-sm text-gray-900">{{ ucfirst($product->status) }}</td>
-                        
                         <td class="px-6 py-4 text-sm">
                             <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="w-16 h-16 object-cover">
                         </td>

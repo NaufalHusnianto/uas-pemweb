@@ -11,20 +11,6 @@
             @csrf
             @method('PUT')
             <div class="mb-4">
-                <label for="category_id" class="block text-sm font-medium text-gray-700">Category</label>
-                <select name="category_id" id="category_id" class="w-full border-gray-300 rounded-md">
-                    <option value="">Select Category</option>
-                    @foreach ($categories as $category)
-                        <option value="{{ $category->id }}" {{ old('category_id', $product->category_id) == $category->id ? 'selected' : '' }}>
-                            {{ $category->name }}
-                        </option>
-                    @endforeach
-                </select>
-                @error('category_id')
-                    <span class="text-red-500 text-sm">{{ $message }}</span>
-                @enderror
-            </div>
-            <div class="mb-4">
                 <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
                 <input type="text" name="name" id="name" class="w-full border-gray-300 rounded-md" value="{{ old('name', $product->name) }}">
                 @error('name')
@@ -35,6 +21,21 @@
                 <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
                 <textarea name="description" id="description" rows="4" class="w-full border-gray-300 rounded-md">{{ old('description', $product->description) }}</textarea>
                 @error('description')
+                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                @enderror
+            </div>
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Categories</label>
+                <div class="grid grid-cols-2 gap-2">
+                    @foreach ($categories as $category)
+                        <div class="flex items-center">
+                            <input type="checkbox" name="category_id[]" value="{{ $category->id }}" 
+                            @if(in_array($category->id, old('category_id', $product->categories->pluck('id')->toArray()))) checked @endif>
+                            <label>{{ $category->name }}</label>
+                        </div>
+                    @endforeach
+                </div>
+                @error('category_id')
                     <span class="text-red-500 text-sm">{{ $message }}</span>
                 @enderror
             </div>
@@ -61,18 +62,6 @@
                     </div>
                 @endif
                 @error('image')
-                    <span class="text-red-500 text-sm">{{ $message }}</span>
-                @enderror
-            </div>
-            <div class="mb-4">
-                <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
-                <select name="status" id="status" class="w-full border-gray-300 rounded-md">
-                    <option value="none" {{ old('status', $product->status) == 'none' ? 'selected' : '' }}>None</option>
-                    <option value="new" {{ old('status', $product->status) == 'new' ? 'selected' : '' }}>New</option>
-                    <option value="bestsale" {{ old('status', $product->status) == 'bestsale' ? 'selected' : '' }}>Best Sale</option>
-                    <option value="trending" {{ old('status', $product->status) == 'trending' ? 'selected' : '' }}>Trending</option>
-                </select>
-                @error('status')
                     <span class="text-red-500 text-sm">{{ $message }}</span>
                 @enderror
             </div>
