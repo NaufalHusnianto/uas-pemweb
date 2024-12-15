@@ -18,6 +18,7 @@
                     @foreach ($carts as $cart)
                         <div class="flex items-center justify-between p-4 border rounded-md shadow-sm">
                             <div class="flex items-center space-x-4">
+                                <input type="checkbox" class="cart-checkbox" data-id="{{ $cart->id }}" data-price="{{ $cart->product->price }}" data-quantity="{{ $cart->quantity }}">
                                 <img src="{{ asset('storage/'.$cart->product->image) }}" alt="{{ $cart->product->name }}" class="w-20 h-20 object-cover rounded-md">
                                 <div>
                                     <h3 class="text-lg font-semibold">{{ $cart->product->name }}</h3>
@@ -36,16 +37,17 @@
                     @endforeach
                 </div>
 
-                <!-- Cart Summary -->
+               <!-- Cart Summary -->
                 <div class="mt-6 flex justify-between items-center bg-gray-100 p-4 rounded-md shadow-md">
                     <div>
                         <h3 class="text-xl font-semibold">Cart Summary</h3>
                         <p class="text-gray-700">Total Items: {{ $carts->sum('quantity') }}</p>
                     </div>
                     <div>
-                        <p class="text-lg font-semibold">Total: ${{ number_format($carts->sum(function ($cart) { return $cart->product->price * $cart->quantity; }), 2) }}</p>
+                        <p class="text-lg font-semibold">Total: <span class="cart-summary-total">${{ number_format($carts->sum(function ($cart) { return $cart->product->price * $cart->quantity; }), 2) }}</span></p>
                     </div>
                 </div>
+
 
                 <div class="mt-6 flex justify-between">
                     <a href="{{ route('products') }}" class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
@@ -59,3 +61,24 @@
         </div>
     </div>
 </x-app-layout>
+
+<script>
+    $(document).ready(function() {
+        function updateTotalPrice() {
+            let total = 0;
+            $('.cart-checkbox:checked').each(function() {
+                let price = $(this).data('price');
+                let quantity = $(this).data('quantity');
+                total += price * quantity;
+            });
+
+            $('.cart-summary-total').text('$' + total.toFixed(2));
+        }
+
+        $('.cart-checkbox').on('change', function() {
+            updateTotalPrice();
+        });
+
+        updateTotalPrice();
+    });
+</script>

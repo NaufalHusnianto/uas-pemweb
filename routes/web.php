@@ -3,27 +3,24 @@
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
 use App\Http\Middleware\AdminMiddleware;
 use Illuminate\Support\Facades\Route;
-
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-
-// Route::get('/', function () {
-//     return view('dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/', function () {
     return view('dashboard');
 })->name('dashboard');
 
-Route::get('/products', [ProductController::class, 'getProducts'])->name('products');
-Route::get('/products/{product}', [ProductController::class, 'detailProducts'])->name('products.detail');
+Route::prefix('products')->group(function () {
+    Route::get('/', [ProductController::class, 'getProducts'])->name('products');
+    Route::get('/{product}', [ProductController::class, 'detailProducts'])->name('products.detail');
+});
 
-Route::get('/cart', [CartController::class, 'index'])->middleware('auth', 'verified')->name('cart.index');
-Route::post('/cart/add/{product}', [CartController::class, 'addToCart'])->middleware('auth', 'verified')->name('cart.add');
-Route::delete('/cart/{product}', [CartController::class, 'removeFromCart'])->middleware('auth', 'verified')->name('cart.remove');
+Route::prefix('cart')->middleware(['auth', 'verified'])->group(function () {
+    Route::get('/', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/add/{product}', [CartController::class, 'addToCart'])->name('cart.add');
+    Route::delete('/{product}', [CartController::class, 'removeFromCart'])->name('cart.remove');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -34,7 +31,15 @@ Route::middleware('auth')->group(function () {
 Route::get('/admin', function () {
     return view('dashboard-admin');
 })->middleware(['auth', 'verified', AdminMiddleware::class])->name('admin');
-    
+
+
+Route::prefix('admin/user')->middleware(['auth', 'verified', AdminMiddleware::class])->name('admin.user.')->group(function () {
+    Route::get('/', [UserController::class, 'index'])->name('index');
+    Route::get('show/{user}', [UserController::class, 'show'])->name('show');
+    Route::delete('destroy/{user}', [UserController::class, 'destroy'])->name('destroy');
+});
+
+
 Route::prefix('admin/product')->middleware(['auth', 'verified', AdminMiddleware::class])->name('admin.product.')->group(function () {
     Route::get('/', [ProductController::class, 'index'])->name('index');
     Route::get('create', [ProductController::class, 'create'])->name('create');

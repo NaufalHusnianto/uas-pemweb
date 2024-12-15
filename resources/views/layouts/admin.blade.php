@@ -59,6 +59,7 @@
                     <nav class="space-y-4">
                         <a href="{{ route('admin') }}" class="block px-4 py-2 rounded-md hover:bg-gray-600 {{ request()->routeIs('admin') ? 'bg-gray-700' : '' }}">Dashboard</a>
                         <a href="{{ route('admin.product.index') }}" class="block px-4 py-2 rounded-md hover:bg-gray-600 {{ request()->is('admin/product*') ? 'bg-gray-700' : '' }}">Manage Products</a>
+                        <a href="{{ route('admin.user.index') }}" class="block px-4 py-2 rounded-md hover:bg-gray-600 {{ request()->is('admin/user*') ? 'bg-gray-700' : '' }}">Manage Users</a>
                     </nav>
                 </div>
             </aside>
@@ -78,5 +79,6 @@
                 sidebar.classList.toggle('-translate-x-full');
             });
         </script>
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     </body>
 </html>
