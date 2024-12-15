@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
@@ -21,6 +22,8 @@ Route::prefix('cart')->middleware(['auth', 'verified'])->group(function () {
     Route::post('/add/{product}', [CartController::class, 'addToCart'])->name('cart.add');
     Route::delete('/{product}', [CartController::class, 'removeFromCart'])->name('cart.remove');
 });
+
+Route::post('/checkout', [OrderController::class, 'checkout'])->name('checkout');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

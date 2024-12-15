@@ -37,7 +37,7 @@
                     @endforeach
                 </div>
 
-               <!-- Cart Summary -->
+                <!-- Cart Summary -->
                 <div class="mt-6 flex justify-between items-center bg-gray-100 p-4 rounded-md shadow-md">
                     <div>
                         <h3 class="text-xl font-semibold">Cart Summary</h3>
@@ -48,14 +48,21 @@
                     </div>
                 </div>
 
+                <!-- Checkout Form -->
+                <form id="checkout-form" action="{{ route('checkout') }}" method="POST" class="hidden">
+                    @csrf
+                    <input type="hidden" name="selected_items" id="selected-items" value="">
+                    <input type="hidden" name="total_price" id="total-price" value="">
+                </form>
 
+                <!-- Checkout Buttons -->
                 <div class="mt-6 flex justify-between">
                     <a href="{{ route('products') }}" class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
                         Continue Shopping
                     </a>
-                    <a href="{{ route('products') }}" class="px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
+                    <button type="button" id="proceed-to-checkout" class="px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
                         Proceed to Checkout
-                    </a>
+                    </button>
                 </div>
             @endif
         </div>
@@ -73,12 +80,33 @@
             });
 
             $('.cart-summary-total').text('$' + total.toFixed(2));
+            $('#total-price').val(total.toFixed(2));
+        }
+
+        function updateSelectedItems() {
+            let selectedItems = [];
+            $('.cart-checkbox:checked').each(function() {
+                selectedItems.push($(this).data('id'));
+            });
+
+            $('#selected-items').val(JSON.stringify(selectedItems));
         }
 
         $('.cart-checkbox').on('change', function() {
             updateTotalPrice();
+            updateSelectedItems();
+        });
+
+        $('#proceed-to-checkout').on('click', function() {
+            if ($('.cart-checkbox:checked').length === 0) {
+                alert('Please select at least one item to proceed to checkout.');
+                return;
+            }
+
+            $('#checkout-form').submit();
         });
 
         updateTotalPrice();
+        updateSelectedItems();
     });
 </script>

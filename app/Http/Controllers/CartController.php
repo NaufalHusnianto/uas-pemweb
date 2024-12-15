@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
+use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -56,5 +58,5 @@ class CartController extends Controller
             return redirect()->route('cart.index')->with('error', 'Item not found in your cart.');
         }
     }
-
+    
 }
