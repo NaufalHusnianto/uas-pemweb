@@ -9,7 +9,7 @@
         <!-- Cart Section -->
         <div class="max-w-7xl mx-auto px-6 sm:px-6 lg:px-8">
             @if ($carts->isEmpty())
-                <div class="text-center text-lg text-gray-700">
+                <div class="text-center text-lg text-gray-700 py-24">
                     Your cart is empty. <a href="{{ route('products') }}" class="text-blue-600 hover:underline">Browse products</a> and add some items!
                 </div>
             @else

@@ -20,6 +20,6 @@ class AdminMiddleware
             return $next($request);
         }
 
-        return redirect('/')->route('error', 'Access Denied.');
+        return redirect()->route('dashboard');
     }
 }
