@@ -1,11 +1,13 @@
 <?php
 
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\FavouritController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\AdminMiddleware;
+use App\Models\Favourit;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -22,6 +24,13 @@ Route::prefix('cart')->middleware(['auth', 'verified'])->group(function () {
     Route::post('/add/{product}', [CartController::class, 'addToCart'])->name('cart.add');
     Route::delete('/{product}', [CartController::class, 'removeFromCart'])->name('cart.remove');
 });
+
+Route::prefix('favourit')->middleware(['auth', 'verified'])->group(function () {
+    Route::get('/', [FavouritController::class, 'index'])->name('favourit.index');
+    Route::post('/addFavItem/{product}', [FavouritController::class, 'addFavouritItem'])->name('favourit.add');
+    Route::delete('/delete/{favId}', [FavouritController::class, 'removeFavouriteItem'])->name('favourit.remove');
+});
+
 
 Route::post('/checkout', [OrderController::class, 'checkout'])->name('checkout');
 
@@ -53,4 +62,4 @@ Route::prefix('admin/product')->middleware(['auth', 'verified', AdminMiddleware:
     Route::delete('destroy/{product}', [ProductController::class, 'destroy'])->name('destroy'); // Route destroy
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
