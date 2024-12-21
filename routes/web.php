@@ -1,14 +1,15 @@
 <?php
 
-use App\Http\Controllers\CartController;
-use App\Http\Controllers\FavouritController;
-use App\Http\Controllers\OrderController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\UserController;
-use App\Http\Middleware\AdminMiddleware;
 use App\Models\Favourit;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\UserController;
+use App\Http\Middleware\AdminMiddleware;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\AddressController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\FavouritController;
 
 Route::get('/', function () {
     return view('dashboard');
@@ -38,6 +39,21 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+Route::middleware('auth')->group(function () {
+    // Address routes
+    Route::get('/address', [AddressController::class, 'index'])->name('address.index');
+    Route::get('/address/create', [AddressController::class, 'create'])->name('address.create');
+    Route::post('/address', [AddressController::class, 'store'])->name('address.store');
+    Route::get('/address/{address}/edit', [AddressController::class, 'edit'])->name('address.edit');
+    Route::put('/address/{address}', [AddressController::class, 'update'])->name('address.update');
+    Route::delete('/address/{address}', [AddressController::class, 'destroy'])->name('address.destroy');
+
+    // Dependent dropdown routes
+    Route::get('/getRegencies', [AddressController::class, 'getRegencies'])->name('getRegencies');
+    Route::get('/getDistricts', [AddressController::class, 'getDistricts'])->name('getDistricts');
+    Route::get('/getVillages', [AddressController::class, 'getVillages'])->name('getVillages');
 });
 
 Route::get('/admin', function () {

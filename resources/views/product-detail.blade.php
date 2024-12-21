@@ -37,6 +37,16 @@
                             </div>
 
                             <div class="mt-6 flex space-x-4">
+                                <form id="FavouritsForm" method="POST"
+                                    action="{{ route('favourit.add', ['product' => $product->id]) }}">
+                                    @csrf
+                                    <input type="hidden">
+                                    <button type="submit"
+                                        class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                                        Wishlist
+                                    </button>
+                                </form>
+
                                 <form id="addToCartForm" method="POST"
                                     action="{{ route('cart.add', ['product' => $product->id]) }}">
                                     @csrf

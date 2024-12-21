@@ -33,7 +33,8 @@ class AddressController extends Controller
 
     public function create()
     {
-        return view('address.create');
+        $provinces = Province::all();
+        return view('address.create', compact('provinces'));
     }
 
     public function store(Request $request)
@@ -105,5 +106,29 @@ class AddressController extends Controller
 
         return redirect()->route('address.index')
             ->with('success', 'Address deleted successfully');
+    }
+
+    public function getRegencies(Request $request)
+    {
+        $regencies = Regency::where('province_id', $request->province_id)
+            ->orderBy('name', 'ASC')
+            ->get();
+        return response()->json($regencies);
+    }
+
+    public function getDistricts(Request $request)
+    {
+        $districts = District::where('regency_id', $request->regency_id)
+            ->orderBy('name', 'ASC')
+            ->get();
+        return response()->json($districts);
+    }
+
+    public function getVillages(Request $request)
+    {
+        $villages = Village::where('district_id', $request->district_id)
+            ->orderBy('name', 'ASC')
+            ->get();
+        return response()->json($villages);
     }
 }
