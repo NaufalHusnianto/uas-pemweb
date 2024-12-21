@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
-    public function checkout(Request $request)
+    public function confirmOrder(Request $request)
     {
         $selectedItems = json_decode($request->input('selected_items'), true);
     

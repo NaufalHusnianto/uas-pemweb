@@ -47,8 +47,10 @@
                                     </button>
                                 </form>
 
-                                <form id="buyNowForm" method="POST" action="{{ route('products', $product->id) }}">
+                                <form id="buyNowForm" method="POST" action="{{ route('order.confirm') }}">
                                     @csrf
+                                    <input type="hidden" name="user_id" value="{{ auth()->id() }}">
+                                    <input type="hidden" name="total_price" id="totalPrice" value="{{ $product->price }}">
                                     <input type="hidden" name="quantity" id="buyQuantity">
                                     <button type="submit"
                                         class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">

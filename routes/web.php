@@ -32,6 +32,12 @@ Route::prefix('favourit')->middleware(['auth'])->group(function () {
 });
 
 
+Route::post('/order/confirm', [OrderController::class, 'confirmOrder'])->name('order.confirm');
+Route::get('/order/{order}/confirm', [OrderController::class, 'showOrderConfirmation'])->name('order.showConfirmation');
+
+Route::get('/payment/{order}', [PaymentController::class, 'showPayment'])->name('payment.show');
+Route::post('/payment', [PaymentController::class, 'processPayment'])->name('payment.process');
+
 Route::post('/checkout', [OrderController::class, 'checkout'])->name('checkout');
 
 Route::middleware('auth')->group(function () {
