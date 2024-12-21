@@ -5,9 +5,6 @@
         </h2>
     </x-slot>
 
-    
-
-   
 
     <!-- Optional JavaScript; choose one of the two! -->
 

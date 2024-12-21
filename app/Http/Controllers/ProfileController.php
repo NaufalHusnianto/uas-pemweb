@@ -17,9 +17,10 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
+        $addresses = Auth::user()->addresses;
         return view('profile.edit', [
             'user' => $request->user(),
-        ]);
+        ], compact('addresses'));
     }
 
     /**
@@ -28,28 +29,28 @@ class ProfileController extends Controller
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
         $user = $request->user();
-    
+
         if ($request->hasFile('photo')) {
             $photoPath = $request->file('photo')->store('profile-photos', 'public');
-    
+
             if ($user->photo_url) {
                 Storage::disk('public')->delete($user->photo_url);
             }
-    
+
             $user->photo_url = $photoPath;
         }
-    
+
         $user->fill($request->validated());
-    
+
         if ($user->isDirty('email')) {
             $user->email_verified_at = null;
         }
-    
+
         $user->save();
-    
+
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }
-    
+
 
     /**
      * Delete the user's account.

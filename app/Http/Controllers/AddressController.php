@@ -13,7 +13,6 @@ use App\Models\Province;
 
 class AddressController extends Controller
 {
-    use AuthorizesRequests;  // Add this trait
 
     public function addAddress()
     {
@@ -34,7 +33,12 @@ class AddressController extends Controller
     public function create()
     {
         $provinces = Province::all();
-        return view('address.create', compact('provinces'));
+        $regencies = Regency::all();
+        $districts = District::all();
+        $villages = Village::all();
+
+        $addresses = Auth::user()->addresses;
+        return view('address.create', compact('addresses', 'provinces', 'regencies', 'districts', 'villages'));
     }
 
     public function store(Request $request)
@@ -55,13 +59,14 @@ class AddressController extends Controller
         $address->user_id = Auth::id();
         $address->save();
 
-        return redirect()->route('address.index')
+
+        return redirect()->route('profile.edit')
             ->with('success', 'Address added successfully');
     }
 
     public function edit(Address $address)
     {
-        $this->authorize('update', $address);
+
 
         $provinces = Province::orderBy('name', 'ASC')->get();
         $regencies = Regency::where('province_id', $address->province_id)
@@ -79,7 +84,6 @@ class AddressController extends Controller
 
     public function update(Request $request, Address $address)
     {
-        $this->authorize('update', $address);
 
         $validated = $request->validate([
             'province_id' => 'required|numeric',
@@ -101,7 +105,7 @@ class AddressController extends Controller
 
     public function destroy(Address $address)
     {
-        $this->authorize('delete', $address);
+
         $address->delete();
 
         return redirect()->route('address.index')
