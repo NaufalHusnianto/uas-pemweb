@@ -25,7 +25,7 @@ Route::prefix('cart')->middleware(['auth', 'verified'])->group(function () {
     Route::delete('/{product}', [CartController::class, 'removeFromCart'])->name('cart.remove');
 });
 
-Route::prefix('favourit')->middleware(['auth', 'verified'])->group(function () {
+Route::prefix('favourit')->middleware(['auth'])->group(function () {
     Route::get('/', [FavouritController::class, 'index'])->name('favourit.index');
     Route::post('/addFavItem/{product}', [FavouritController::class, 'addFavouritItem'])->name('favourit.add');
     Route::delete('/delete/{favId}', [FavouritController::class, 'removeFavouriteItem'])->name('favourit.remove');

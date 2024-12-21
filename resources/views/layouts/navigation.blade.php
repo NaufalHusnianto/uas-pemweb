@@ -36,7 +36,7 @@
                     <input type="text" class="bg-gray-200 rounded-3xl shadow-sm border-none" placeholder="Search..." />
                 </div>
 
-                <a href="#" class="p-2 hover:bg-gray-200 rounded-full sm:ms-4">
+                <a href="{{ route('favourit.index') }}" class="p-2 hover:bg-gray-200 rounded-full sm:ms-4">
                     <x-heroicon-o-heart class="h-5 w-5" />
                     @if ($favouriteCount > 0)
                         <span class="absolute top-0 right-0 inline-flex items-center justify-center h-4 w-4 bg-red-500 text-white text-xs font-bold rounded-full">
