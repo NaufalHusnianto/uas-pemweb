@@ -99,7 +99,7 @@ class AddressController extends Controller
 
         $address->update($validated);
 
-        return redirect()->route('address.index')
+        return redirect()->route('profile.edit')
             ->with('success', 'Address updated successfully');
     }
 
@@ -108,7 +108,7 @@ class AddressController extends Controller
 
         $address->delete();
 
-        return redirect()->route('address.index')
+        return redirect()->route('profile.edit')
             ->with('success', 'Address deleted successfully');
     }
 
