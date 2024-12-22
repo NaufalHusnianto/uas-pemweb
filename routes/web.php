@@ -70,6 +70,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/admin', [ShipmentController::class, 'index'])->middleware(['auth', 'verified', AdminMiddleware::class])->name('admin');
+Route::get('/admin', [ShipmentController::class, 'index'])->middleware(['auth', 'verified', AdminMiddleware::class])->name('admin');
 
 Route::prefix('admin/user')->middleware(['auth', 'verified', AdminMiddleware::class])->name('admin.user.')->group(function () {
     Route::get('/', [UserController::class, 'index'])->name('index');
