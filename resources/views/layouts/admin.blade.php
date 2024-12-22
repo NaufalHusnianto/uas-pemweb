@@ -60,6 +60,7 @@
                         <a href="{{ route('admin') }}" class="block px-4 py-2 rounded-md hover:bg-gray-600 {{ request()->routeIs('admin') ? 'bg-gray-700' : '' }}">Dashboard</a>
                         <a href="{{ route('admin.product.index') }}" class="block px-4 py-2 rounded-md hover:bg-gray-600 {{ request()->is('admin/product*') ? 'bg-gray-700' : '' }}">Manage Products</a>
                         <a href="{{ route('admin.user.index') }}" class="block px-4 py-2 rounded-md hover:bg-gray-600 {{ request()->is('admin/user*') ? 'bg-gray-700' : '' }}">Manage Users</a>
+                        <a href="{{ route('admin.order.index') }}" class="block px-4 py-2 rounded-md hover:bg-gray-600 {{ request()->is('admin/order*') ? 'bg-gray-700' : '' }}">Manage Orders</a>
                     </nav>
                 </div>
             </aside>
