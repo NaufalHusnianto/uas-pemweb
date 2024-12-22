@@ -49,7 +49,7 @@
                 </div>
 
                 <!-- Checkout Form -->
-                <form id="checkout-form" action="{{ route('checkout') }}" method="POST" class="hidden">
+                <form id="checkout-form" action="{{ route('order.confirm') }}" method="POST" class="hidden">
                     @csrf
                     <input type="hidden" name="selected_items" id="selected-items" value="">
                     <input type="hidden" name="total_price" id="total-price" value="">

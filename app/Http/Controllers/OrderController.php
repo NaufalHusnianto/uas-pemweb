@@ -42,6 +42,7 @@ class OrderController extends Controller
             }
         }
     
-        return redirect()->route('cart.index')->with('success', 'Checkout berhasil!');
+        return redirect()->route('payment.show', $order->id)
+                         ->with('success', 'Order berhasil! Lanjutkan ke pembayaran.');
     }
 }

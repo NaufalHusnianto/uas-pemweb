@@ -3,6 +3,7 @@
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\FavouritController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
@@ -31,14 +32,8 @@ Route::prefix('favourit')->middleware(['auth'])->group(function () {
     Route::delete('/delete/{favId}', [FavouritController::class, 'removeFavouriteItem'])->name('favourit.remove');
 });
 
-
 Route::post('/order/confirm', [OrderController::class, 'confirmOrder'])->name('order.confirm');
-Route::get('/order/{order}/confirm', [OrderController::class, 'showOrderConfirmation'])->name('order.showConfirmation');
-
-Route::get('/payment/{order}', [PaymentController::class, 'showPayment'])->name('payment.show');
-Route::post('/payment', [PaymentController::class, 'processPayment'])->name('payment.process');
-
-Route::post('/checkout', [OrderController::class, 'checkout'])->name('checkout');
+Route::get('/order/{order}/payment', [PaymentController::class, 'showPayment'])->name('order.payment.show');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
