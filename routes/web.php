@@ -11,6 +11,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\AdminMiddleware;
+use App\Http\Controllers\ShipmentController; // Import ShipmentController
 
 Route::get('/', function () {
     return view('dashboard');
@@ -94,5 +95,8 @@ Route::prefix('admin/product')->middleware(['auth', 'verified', AdminMiddleware:
     Route::put('update/{product}', [ProductController::class, 'update'])->name('update');
     Route::delete('destroy/{product}', [ProductController::class, 'destroy'])->name('destroy'); // Route destroy
 });
+
+// Add this route for Shipments
+Route::get('/shipments', [ShipmentController::class, 'index']); // Add this line for shipments route
 
 require __DIR__ . '/auth.php';
