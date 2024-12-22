@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\OrderStatusController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\FavouritController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
@@ -33,8 +34,8 @@ Route::prefix('favourit')->middleware(['auth'])->group(function () {
     Route::delete('/delete/{favId}', [FavouritController::class, 'removeFavouriteItem'])->name('favourit.remove');
 });
 
-
-Route::post('/checkout', [OrderController::class, 'checkout'])->name('checkout');
+Route::post('/order/confirm', [OrderController::class, 'confirmOrder'])->name('order.confirm');
+Route::get('/order/{order}/payment', [PaymentController::class, 'showPayment'])->name('order.payment.show');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

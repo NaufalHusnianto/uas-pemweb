@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
-    public function checkout(Request $request)
+    public function confirmOrder(Request $request)
     {
         $selectedItems = json_decode($request->input('selected_items'), true);
     
@@ -42,6 +42,7 @@ class OrderController extends Controller
             }
         }
     
-        return redirect()->route('cart.index')->with('success', 'Checkout berhasil!');
+        return redirect()->route('payment.show', $order->id)
+                         ->with('success', 'Order berhasil! Lanjutkan ke pembayaran.');
     }
 }
