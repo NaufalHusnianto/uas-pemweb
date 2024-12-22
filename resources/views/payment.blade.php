@@ -11,7 +11,7 @@
                 <div class="p-6 bg-white border-b border-gray-200">
                     <h3 class="text-2xl font-bold">Complete Your Payment</h3>
                     <p>Total Price: IDR {{ number_format($order->total_price, 2) }}</p>
-                    <form method="POST" action="{{ route('payment.process') }}">
+                    <form method="POST" action="{{ route('products') }}">
                         @csrf
                         <input type="hidden" name="order_id" value="{{ $order->id }}">
                         <div class="mt-4">

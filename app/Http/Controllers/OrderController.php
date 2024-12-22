@@ -12,14 +12,13 @@ class OrderController extends Controller
     public function confirmOrder(Request $request)
     {
         $selectedItems = json_decode($request->input('selected_items'), true);
-    
         $request->validate([
             'selected_items' => 'required',
             'total_price' => 'required|numeric|min:1',
         ]);
     
         if (!is_array($selectedItems)) {
-            return back()->withErrors(['error' => 'Invalid selected items format.']);
+            $selectedItems = [$selectedItems];
         }
     
         $order = Order::create([
@@ -42,7 +41,7 @@ class OrderController extends Controller
             }
         }
     
-        return redirect()->route('payment.show', $order->id)
+        return redirect()->route('order.payment.show', $order->id)
                          ->with('success', 'Order berhasil! Lanjutkan ke pembayaran.');
     }
 }
