@@ -10,7 +10,7 @@
     </header>
 
     <div class="mt-6">
-        <!-- Addresses List -->
+
         @if ($addresses->count() > 0)
             <div class="space-y-6">
                 @foreach ($addresses as $address)
@@ -47,11 +47,10 @@
             <p class="text-gray-600">{{ __('No addresses added yet.') }}</p>
         @endif
 
-        <!-- Action Buttons -->
         <div class="mt-6 flex gap-4">
-            <form method="POST" action="{{ route('address.select') }}">
-
-                <button onclick="saveSelectedAddress()"
+            <form method="POST" action="{{ route('address.select') }}" id="addressSelectForm">
+                @csrf
+                <button type="button" id="saveAddressBtn"
                     class="inline-flex items-center px-4 py-2 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700">
                     {{ __('Save Selection') }}
                 </button>
@@ -64,7 +63,6 @@
         </div>
     </div>
 
-    <!-- Success Message -->
     @if (session('success'))
         <div x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 2000)"
             class="mt-4 p-4 text-sm text-green-600 bg-green-100 rounded-lg">
@@ -72,17 +70,23 @@
         </div>
     @endif
 
-    <!-- Alert Message Div -->
     <div id="alert-message" class="mt-4 p-4 text-sm rounded-lg hidden"></div>
+</section>
 
-    @push('scripts')
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const addresses = document.querySelectorAll('.address-radio');
-                if (addresses.length === 1) {
-                    saveSelectedAddress();
-                }
-            });
+
+@push('head-scripts')
+    <script>
+        function initializeAddressManager() {
+            const saveAddressBtn = document.getElementById('saveAddressBtn');
+            const addresses = document.querySelectorAll('.address-radio');
+
+            if (addresses.length === 1) {
+                saveSelectedAddress();
+            }
+
+            if (saveAddressBtn) {
+                saveAddressBtn.addEventListener('click', saveSelectedAddress);
+            }
 
             function saveSelectedAddress() {
                 const selectedRadio = document.querySelector('input[name="selected_address"]:checked');
@@ -92,18 +96,16 @@
                     return;
                 }
 
-                const addressId = selectedRadio.value;
+                const formData = new FormData();
+                formData.append('address_id', selectedRadio.value);
+                formData.append('_token', document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
 
                 fetch('{{ route('address.select') }}', {
                         method: 'POST',
                         headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                             'Accept': 'application/json'
                         },
-                        body: JSON.stringify({
-                            address_id: addressId
-                        })
+                        body: formData
                     })
                     .then(response => response.json())
                     .then(data => {
@@ -136,6 +138,9 @@
                     alertDiv.classList.add('hidden');
                 }, 3000);
             }
-        </script>
-    @endpush
-</section>
+        }
+
+
+        document.addEventListener('DOMContentLoaded', initializeAddressManager);
+    </script>
+@endpush

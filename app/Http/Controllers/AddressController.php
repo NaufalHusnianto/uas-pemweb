@@ -141,22 +141,21 @@ class AddressController extends Controller
         try {
             DB::beginTransaction();
 
-            // Validate the request
             $request->validate([
                 'address_id' => 'required|exists:addresses,id'
             ]);
 
-            // Update or create the selected address record
             AddressSelected::updateOrCreate(
-                ['user_id' => Auth::id()], 
-                ['address_id' => $request->address_id] 
+                ['user_id' => Auth::id()],
+                ['address_id' => $request->address_id]
             );
 
             DB::commit();
 
-            return redirect()->route('profile.edit')
-                ->with('success', 'Address added successfully');
-                
+            return response()->json([
+                'success' => true,
+                'message' => 'Address selected successfully'
+            ]);
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json([
@@ -165,7 +164,6 @@ class AddressController extends Controller
             ], 500);
         }
     }
-
     public function getSelectedAddress()
     {
         $selectedAddress = AddressSelected::where('user_id', Auth::id())->first();
