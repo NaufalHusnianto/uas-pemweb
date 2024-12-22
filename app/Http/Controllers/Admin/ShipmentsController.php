@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Shipment;
 
@@ -13,6 +14,6 @@ class ShipmentController extends Controller
         $orderIDs = Shipment::pluck('order_id')->toArray();
 
         // Kirim data ke view profile.dashboard-admin
-        return view('profile.dashboard-admin', compact('orderIDs'));
+        return view('dashboard-admin', compact('orderIDs'));
     }
 }

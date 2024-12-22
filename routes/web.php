@@ -11,7 +11,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\AdminMiddleware;
-use App\Http\Controllers\ShipmentController; // Import ShipmentController
+use App\Http\Controllers\Admin\ShipmentController;
 
 Route::get('/', function () {
     return view('dashboard');
@@ -69,9 +69,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/getVillages', [AddressController::class, 'getVillages'])->name('getVillages');
 });
 
-Route::get('/admin', function () {
-    return view('dashboard-admin');
-})->middleware(['auth', 'verified', AdminMiddleware::class])->name('admin');
+Route::get('/admin', [ShipmentController::class, 'index'])->middleware(['auth', 'verified', AdminMiddleware::class])->name('admin');
 
 Route::prefix('admin/user')->middleware(['auth', 'verified', AdminMiddleware::class])->name('admin.user.')->group(function () {
     Route::get('/', [UserController::class, 'index'])->name('index');
@@ -97,6 +95,5 @@ Route::prefix('admin/product')->middleware(['auth', 'verified', AdminMiddleware:
 });
 
 // Add this route for Shipments
-Route::get('/shipments', [ShipmentController::class, 'index']); // Add this line for shipments route
 
 require __DIR__ . '/auth.php';
