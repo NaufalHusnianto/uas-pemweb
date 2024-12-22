@@ -94,5 +94,7 @@ Route::prefix('admin/product')->middleware(['auth', 'verified', AdminMiddleware:
     Route::delete('destroy/{product}', [ProductController::class, 'destroy'])->name('destroy'); // Route destroy
 });
 
+Route::get('/order/{orderId}/invoice', [OrderController::class, 'printInvoice'])->name('order.printInvoice');
+
 
 require __DIR__ . '/auth.php';

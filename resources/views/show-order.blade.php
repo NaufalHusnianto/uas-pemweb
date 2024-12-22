@@ -111,6 +111,13 @@
                                 </button>
                             </form>
                         @endif
+                        @if ($order->payment && $order->payment->status === 'confirmed')
+                            <div class="mt-6">
+                                <a href="{{ route('order.printInvoice', $order->id) }}" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
+                                    Print Invoice (PDF)
+                                </a>
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>

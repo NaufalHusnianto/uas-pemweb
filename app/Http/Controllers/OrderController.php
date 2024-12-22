@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AddressSelected;
 use App\Models\Order;
 use App\Models\OrderItem;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -80,5 +80,15 @@ class OrderController extends Controller
         ]);
 
         return redirect()->route('order.show', $order->id)->with('success', 'Payment method has been selected.');
+    }
+
+    public function printInvoice($orderId)
+    {
+        $order = Order::with(['user', 'orderItems.product', 'payment', 'shipment'])->findOrFail($orderId);
+
+        $pdf = Pdf::loadView('invoice', compact('order'));
+        // $pdf = PDF::loadView('order.invoice', compact('order'));
+        
+        return $pdf->download('invoice_' . $order->id . '.pdf');
     }
 }
