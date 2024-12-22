@@ -21,6 +21,50 @@
                         <p><strong>Last Updated:</strong> {{ $order->updated_at->format('d F Y, H:i') }}</p>
                     </div>
 
+                    <!-- Payment Form -->
+                    @if (!$order->payment)
+                        <h4 class="text-xl font-bold mb-4">Select Payment Method</h4>
+                        <form method="POST" action="{{ route('order.payment', $order->id) }}">
+                            @csrf
+                            @method('PUT')
+
+                            <div class="mb-4">
+                                <label for="method" class="block text-sm font-medium text-gray-700">Payment Method</label>
+                                <select id="method" name="method" class="mt-1 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                    <option value="bank_transfer">Bank Transfer</option>
+                                    <option value="paypal">PayPal</option>
+                                    <option value="dana">DANA</option>
+                                    <option value="gopay">GoPay</option>
+                                    <option value="ovo">OVO</option>
+                                </select>
+                                @error('method')
+                                    <div class="text-red-500 text-sm mt-2">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="mb-4">
+                                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                                    Submit Payment Method
+                                </button>
+                            </div>
+                        </form>
+                    @else
+                        <div class="mb-4 border border-gray-300 p-4">
+                            <p class="text-green-600">Payment has already been made using the method: {{ ucfirst($order->payment->method) }}.</p>
+                            <p>
+                                Payment Status: 
+                                @if($order->payment->status === 'confirmed')
+                                    <span class="text-green-600 font-bold text-lg">Confirmed</span>
+                                @elseif($order->payment->status === 'failed')
+                                    <span class="text-red-600 font-bold text-lg">Failed</span>
+                                @else
+                                    <span class="text-gray-600 font-bold text-lg">Pending</span>
+                                @endif
+                            </p>
+                            
+                        </div>
+                    @endif
+
                     <!-- Order Items -->
                     <h4 class="text-xl font-bold mb-4">Order Items</h4>
                     <div class="overflow-auto">

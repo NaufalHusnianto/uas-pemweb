@@ -38,6 +38,7 @@ Route::post('/order/confirm', [OrderController::class, 'confirmOrder'])->name('o
 Route::get('/order', [OrderController::class, 'index'])->name('order.index');
 Route::get('/order/{order}', [OrderController::class, 'showOrder'])->name('order.show');
 Route::put('/order/{order}/cancel', [OrderController::class, 'cancelOrder'])->name('order.cancel');
+Route::put('/order/{order}/payment', [OrderController::class, 'storePayment'])->name('order.payment');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

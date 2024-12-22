@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AddressSelected;
 use App\Models\Order;
 use App\Models\OrderItem;
 use Illuminate\Http\Request;
@@ -53,6 +54,8 @@ class OrderController extends Controller
 
     public function showOrder(Order $order)
     {
+        $order->load('payment', 'shipment');
+
         return view('show-order', compact('order'));
     }
 
@@ -63,5 +66,19 @@ class OrderController extends Controller
     
         return redirect()->route('order.show', $order->id)
                          ->with('success', 'Order berhasil dibatalkan!');
+    }
+
+    public function storePayment(Request $request, Order $order)
+    {
+        $validated = $request->validate([
+            'method' => 'required|in:bank_transfer,paypal,dana,gopay,ovo',
+        ]);
+
+        $order->payment()->create([
+            'method' => $validated['method'],
+            'status' => 'pending',
+        ]);
+
+        return redirect()->route('order.show', $order->id)->with('success', 'Payment method has been selected.');
     }
 }
