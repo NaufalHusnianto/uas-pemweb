@@ -39,6 +39,11 @@ Route::get('/order', [OrderController::class, 'index'])->name('order.index');
 Route::get('/order/{order}', [OrderController::class, 'showOrder'])->name('order.show');
 Route::put('/order/{order}/cancel', [OrderController::class, 'cancelOrder'])->name('order.cancel');
 Route::put('/order/{order}/payment', [OrderController::class, 'storePayment'])->name('order.payment');
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', AdminMiddleware::class])->group(function () {
+    Route::put('order/{order}/update-payment-status', [OrderControllerAdmin::class, 'updatePaymentStatus'])->name('order.updatePaymentStatus');
+    Route::post('orders/{order}/create-shipment', [OrderControllerAdmin::class, 'createShipment'])->name('order.createShipment');
+    Route::put('/order/{order}/shipment/update', [OrderControllerAdmin::class, 'updateShipmentStatus'])->name('order.updateShipmentStatus');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

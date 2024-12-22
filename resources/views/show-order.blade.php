@@ -61,7 +61,16 @@
                                     <span class="text-gray-600 font-bold text-lg">Pending</span>
                                 @endif
                             </p>
-                            
+
+                            <!-- Display Shipment Information if Payment is Confirmed -->
+                            @if($order->payment->status === 'confirmed')
+                                <div class="mt-6">
+                                    <h4 class="text-xl font-bold mb-4">Shipment Details</h4>
+                                    <p><strong>Shipment Status:</strong> {{ ucfirst($order->shipment->status) }}</p>
+                                    <p><strong>Tracking Number:</strong> {{ $order->shipment->tracking_number }}</p>
+                                    <p class="text-green-600">Your order will be delivered soon.</p>
+                                </div>
+                            @endif
                         </div>
                     @endif
 

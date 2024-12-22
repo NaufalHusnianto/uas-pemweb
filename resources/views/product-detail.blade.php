@@ -55,12 +55,12 @@
                                     @csrf
                                     <input type="hidden" name="quantity" id="cartQuantity">
                                     <button type="submit"
-                                        class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                                        class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
                                         Add to Cart
                                     </button>
                                 </form>
 
-                                <!-- Buy Now -->
+                                {{-- <!-- Buy Now -->
                                 <form id="buyNowForm" method="POST" action="{{ route('order.confirm') }}">
                                     @csrf
                                     <input type="hidden" name="total_price" id="totalPrice" value="{{ $product->price }}">
@@ -71,7 +71,7 @@
                                         class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
                                         Buy Now
                                     </button>
-                                </form>
+                                </form> --}}
                             </div>
                         </div>
                     </div>
