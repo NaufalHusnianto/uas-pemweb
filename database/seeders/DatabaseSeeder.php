@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use AzisHapidin\IndoRegion\IndoRegion;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -15,7 +16,8 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             AdminSeeder::class,
-            CategorySeeder::class 
+            CategorySeeder::class,
+            IndoRegionSeeder::class,
         ]);
     }
 }

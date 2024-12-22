@@ -11,13 +11,10 @@ class OrderStatusController extends Controller
 {
     public function update(Request $request)
     {
-        dd($request);
         
         $validated = $request->validate([
             'statuses' => 'required|array',
         ]);
-
-        dd($validated['statuses']);
 
         foreach ($validated['statuses'] as $orderId => $status) {
             $order = Order::find($orderId);
@@ -27,6 +24,6 @@ class OrderStatusController extends Controller
             }
         }
 
-        return redirect()->route('admin.orders.index')->with('success', 'Order statuses updated successfully.');
+        return redirect()->route('admin.order.index')->with('success', 'Order statuses updated successfully.');
     }
 }

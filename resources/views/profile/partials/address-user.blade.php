@@ -49,7 +49,7 @@
 
         <!-- Action Buttons -->
         <div class="mt-6 flex gap-4">
-            <form method="POST" action="{{ route('address.select', $address) }}">
+            <form method="POST" action="{{ route('address.select') }}">
 
                 <button onclick="saveSelectedAddress()"
                     class="inline-flex items-center px-4 py-2 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700">
