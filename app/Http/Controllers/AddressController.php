@@ -3,13 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Address;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use App\Models\Regency;
 use App\Models\Village;
 use App\Models\District;
 use App\Models\Province;
+use Illuminate\Http\Request;
+use App\Models\AddressSelected;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class AddressController extends Controller
 {
@@ -55,13 +57,34 @@ class AddressController extends Controller
             'detail_address' => 'required|string',
         ]);
 
-        $address = new Address($validated);
-        $address->user_id = Auth::id();
-        $address->save();
+        // $address = new Address($validated);
+        // $address->user_id = Auth::id();
+        // $address->save();
 
 
-        return redirect()->route('profile.edit')
-            ->with('success', 'Address added successfully');
+        DB::beginTransaction();
+        try {
+            $address = new Address($validated);
+            $address->user_id = Auth::id();
+            $address->save();
+
+            // If this is the only address, automatically select it
+            $addressCount = Address::where('user_id', Auth::id())->count();
+            if ($addressCount === 1) {
+                AddressSelected::updateOrCreate(
+                    ['user_id' => Auth::id()],
+                    ['address_id' => $address->id]
+                );
+            }
+
+            DB::commit();
+            return redirect()->route('profile.edit')
+                ->with('success', 'Address added successfully');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()
+                ->with('error', 'Error adding address: ' . $e->getMessage());
+        }
     }
 
     public function edit(Address $address)
@@ -110,6 +133,45 @@ class AddressController extends Controller
 
         return redirect()->route('profile.edit')
             ->with('success', 'Address deleted successfully');
+    }
+
+
+    public function selectAddress(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+
+            // Validate the request
+            $request->validate([
+                'address_id' => 'required|exists:addresses,id'
+            ]);
+
+            // Update or create the selected address record
+            AddressSelected::updateOrCreate(
+                ['user_id' => Auth::id()], 
+                ['address_id' => $request->address_id] 
+            );
+
+            DB::commit();
+
+            return redirect()->route('profile.edit')
+                ->with('success', 'Address added successfully');
+                
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => 'Error updating address selection: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function getSelectedAddress()
+    {
+        $selectedAddress = AddressSelected::where('user_id', Auth::id())->first();
+        return response()->json([
+            'selected_address_id' => $selectedAddress ? $selectedAddress->address_id : null
+        ]);
     }
 
     public function getRegencies(Request $request)

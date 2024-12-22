@@ -23,4 +23,7 @@ class Address extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function address_selected(){
+        return $this->hasOne(Address::class, 'address_selected_id');
+    }
 }

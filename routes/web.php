@@ -49,6 +49,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/address/{address}/edit', [AddressController::class, 'edit'])->name('address.edit');
     Route::put('/address/{address}', [AddressController::class, 'update'])->name('address.update');
     Route::delete('/address/{address}', [AddressController::class, 'destroy'])->name('address.destroy');
+    Route::post('/address/select', [AddressController::class, 'selectAddress'])->name('address.select');
+    Route::get('/address/selected', [AddressController::class, 'getSelectedAddress'])->name('address.selected');
 
     // Dependent dropdown routes
     Route::get('/getRegencies', [AddressController::class, 'getRegencies'])->name('getRegencies');
