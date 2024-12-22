@@ -33,7 +33,7 @@
                                     <option value="processing" {{ $order->status === 'processing' ? 'selected' : '' }}>Processing</option>
                                     <option value="shipped" {{ $order->status === 'shipped' ? 'selected' : '' }}>Shipped</option>
                                     <option value="delivered" {{ $order->status === 'delivered' ? 'selected' : '' }}>Delivered</option>
-                                    <option value="canceled" {{ $order->status === 'canceled' ? 'selected' : '' }}>Canceled</option>
+                                    <option value="cancelled" {{ $order->status === 'cancelled' ? 'selected' : '' }}>Canceled</option>
                                 </select>
                             </td>
                             <td class="px-6 py-4 text-sm text-gray-900">{{ $order->created_at->format('d-m-Y H:i') }}</td>

@@ -11,7 +11,6 @@ class OrderStatusController extends Controller
 {
     public function update(Request $request)
     {
-        
         $validated = $request->validate([
             'statuses' => 'required|array',
         ]);

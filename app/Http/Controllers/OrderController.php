@@ -41,7 +41,27 @@ class OrderController extends Controller
             }
         }
     
-        return redirect()->route('order.payment.show', $order->id)
+        return redirect()->route('order.show', $order->id)
                          ->with('success', 'Order berhasil! Lanjutkan ke pembayaran.');
+    }
+
+    public function index()
+    {
+        $orders = Order::where('user_id', Auth::id())->get();
+        return view('order', compact('orders'));
+    }
+
+    public function showOrder(Order $order)
+    {
+        return view('show-order', compact('order'));
+    }
+
+    public function cancelOrder(Order $order)
+    {
+        $order->status = 'cancelled';
+        $order->save();
+    
+        return redirect()->route('order.show', $order->id)
+                         ->with('success', 'Order berhasil dibatalkan!');
     }
 }

@@ -41,7 +41,6 @@
                 <div class="mt-6 flex justify-between items-center bg-gray-100 p-4 rounded-md shadow-md">
                     <div>
                         <h3 class="text-xl font-semibold">Cart Summary</h3>
-                        <p class="text-gray-700">Total Items: {{ $carts->sum('quantity') }}</p>
                     </div>
                     <div>
                         <p class="text-lg font-semibold">Total: <span class="cart-summary-total">${{ number_format($carts->sum(function ($cart) { return $cart->product->price * $cart->quantity; }), 2) }}</span></p>

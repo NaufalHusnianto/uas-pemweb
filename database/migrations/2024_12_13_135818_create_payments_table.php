@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('order_id')->constrained()->cascadeOnDelete();
             $table->enum('method', ['bank_transfer', 'paypal', 'dana', 'gopay', 'ovo']);
-            $table->enum('status', ['pending', 'comfirmed', 'failed'])->default('pending');
+            $table->enum('status', ['pending', 'confirmed', 'failed'])->default('pending');
             $table->timestamps();
         });
     }

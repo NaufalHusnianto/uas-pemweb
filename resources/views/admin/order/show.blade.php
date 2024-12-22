@@ -44,7 +44,7 @@
                     @foreach ($order->orderItems as $item)
                         <tr class="hover:bg-gray-100">
                             <td class="px-6 py-4 text-sm text-gray-500">{{ $loop->iteration }}</td>
-                            <td class="px-6 py-4 text-sm text-gray-900">{{ $item->product_name }}</td>
+                            <td class="px-6 py-4 text-sm text-gray-900">{{ $item->product->name }}</td>
                             <td class="px-6 py-4 text-sm text-gray-900">{{ $item->quantity }}</td>
                             <td class="px-6 py-4 text-sm text-gray-900">Rp {{ number_format($item->price, 2) }}</td>
                         </tr>
